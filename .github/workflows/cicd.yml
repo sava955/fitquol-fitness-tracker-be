@@ -2,7 +2,7 @@ name: Deploy Node Application
 
 on: 
   push:
-    branches:  # ✅ Typo fixed here (was: "brances")
+    branches:
       - main
 
 jobs:
