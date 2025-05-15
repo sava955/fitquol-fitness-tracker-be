@@ -29,4 +29,4 @@ jobs:
       - name: Delete old container
         run: docker rm -f nodejs-app-container
       - name: Run docker container
-        run: docoker run -d -p 3000:3000 --name nodejs-app-container sava995/fitquol:latest
+        run: docker run -d -p 3000:3000 --name nodejs-app-container sava995/fitquol:latest
