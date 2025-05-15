@@ -1,9 +1,9 @@
-const RecipeCategory = require("../models/recipe-category");
+import RecipeCategory from "../models/recipe-category.js";
 
-const { CreateSuccess } = require("../utils/success");
-const { CreateError } = require("../utils/error");
+import { CreateSuccess } from "../utils/success.js";
+import { CreateError } from "../utils/error.js";
 
-exports.getRecipeCategories = async (req, res, next) => {
+export const getRecipeCategories = async (req, res, next) => {
   try {
     const start = parseInt(req.query.start);
     const limit = parseInt(req.query.limit);

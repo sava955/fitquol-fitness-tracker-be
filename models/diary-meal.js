@@ -1,7 +1,7 @@
-const mongoose = require("mongoose");
-const Schema = mongoose.Schema;
+import mongoose from "mongoose";
+const { Schema } = mongoose;
 
-const diaryMealSchema = Schema({
+const diaryMealSchema = new Schema({
   image: { type: String },
   name: { type: String, required: true },
   quantity: { type: Number, required: true },
@@ -35,4 +35,4 @@ const diaryMealSchema = Schema({
   user: { type: Schema.Types.ObjectId, ref: "User" },
 });
 
-module.exports = mongoose.model("DiaryMeal", diaryMealSchema);
+export default mongoose.model("DiaryMeal", diaryMealSchema);

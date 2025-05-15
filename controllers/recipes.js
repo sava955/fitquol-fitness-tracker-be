@@ -1,18 +1,17 @@
-const fs = require("fs");
-const path = require("path");
+import fs from "fs";
+import path from "path";
 
-const Recipe = require("../models/recipe");
-const RecipeCategory = require("../models/recipe-category");
-const Goal = require("../models/goal");
+import Recipe from "../models/recipe.js";
+import RecipeCategory from "../models/recipe-category.js";
+import Goal from "../models/goal.js";
 
-const { CreateSuccess } = require("../utils/success");
-const { CreateError } = require("../utils/error");
+import { CreateSuccess } from "../utils/success.js";
+import { CreateError } from "../utils/error.js";
 
-const { setCalories } = require("../utils/calories");
-const { setMacronutrients } = require("../utils/macronutrients");
-const { setMicronutrients } = require("../utils/micronutrients");
+import { setMacronutrients } from "../utils/macronutrients.js";
+import { setMicronutrients } from "../utils/micronutrients.js";
 
-exports.getRecipes = async (req, res, next) => {
+export const getRecipes = async (req, res, next) => {
   try {
     const start = parseInt(req.query.start);
     const limit = parseInt(req.query.limit);
@@ -69,7 +68,7 @@ exports.getRecipes = async (req, res, next) => {
   }
 };
 
-exports.getRecipeById = async (req, res, next) => {
+export const getRecipeById = async (req, res, next) => {
   try {
     const recipe = await Recipe.findById(req.params.id).populate("category");
     const goal = await Goal.findOne({
@@ -100,7 +99,7 @@ exports.getRecipeById = async (req, res, next) => {
   }
 };
 
-exports.createRecipe = async (req, res, next) => {
+export const createRecipe = async (req, res, next) => {
   try {
     const user = req.user;
     const url = req.protocol + "://" + req.get("host");
@@ -138,7 +137,7 @@ exports.createRecipe = async (req, res, next) => {
   }
 };
 
-exports.updateRecipe = async (req, res, next) => {
+export const updateRecipe = async (req, res, next) => {
   try {
     const id = req.params.id;
     const recipe = await Recipe.findById(id);
@@ -210,7 +209,7 @@ exports.updateRecipe = async (req, res, next) => {
   }
 };
 
-exports.deleteRecipe = async (req, res, next) => {
+export const deleteRecipe = async (req, res, next) => {
   const id = req.params.id;
   const recipe = await Recipe.findById(id);
 

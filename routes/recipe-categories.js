@@ -1,8 +1,9 @@
-const express = require('express');
-const recipeCategoriesCtrl = require('../controllers/recipe-categories');
+import express from 'express';
+import * as recipeCategoriesCtrl from '../controllers/recipe-categories.js';
+import * as authMiddleware from '../utils/auth-middleware.js';
+
 const router = express.Router();
-const authMiddleware = require('../utils/auth-middleware');
 
 router.get('', authMiddleware.verifyToken, recipeCategoriesCtrl.getRecipeCategories);
 
-module.exports = router;
+export default router;

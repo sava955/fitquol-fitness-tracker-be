@@ -1,9 +1,10 @@
-const express = require('express');
-const mealsCtrl = require('../controllers/meals');
+import express from 'express';
+import * as mealsCtrl from '../controllers/meals.js';
+import * as authMiddleware from '../utils/auth-middleware.js';
+
 const router = express.Router();
-const authMiddleware = require('../utils/auth-middleware');
 
 router.get('', authMiddleware.verifyToken, mealsCtrl.getMeals);
 router.get('/:id', authMiddleware.verifyToken, mealsCtrl.getMealById);
 
-module.exports = router;
+export default router;

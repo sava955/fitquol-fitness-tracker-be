@@ -1,11 +1,11 @@
-const Goal = require("../models/goal");
+import Goal from "../models/goal.js";
 
-const { setDate } = require("../utils/set-date");
+import { setDate } from "../utils/set-date.js";
 
-const { CreateSuccess } = require("../utils/success");
-const { CreateError } = require("../utils/error");
+import { CreateSuccess } from "../utils/success.js";
+import { CreateError } from "../utils/error.js";
 
-exports.getCurrentGoal = async (req, res, next) => {
+export const getCurrentGoal = async (req, res, next) => {
   try {
     const date = setDate(new Date());
     const goal = await Goal.findOne({
@@ -19,7 +19,7 @@ exports.getCurrentGoal = async (req, res, next) => {
   }
 };
 
-exports.getGoals = async (req, res, next) => {
+export const getGoals = async (req, res, next) => {
   try {
     const goals = await Goal.find({ user: req.user.id })
       .skip(start > 1 ? (start - 1) * limit : 0)

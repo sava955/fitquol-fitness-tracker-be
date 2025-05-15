@@ -1,15 +1,15 @@
-const Goal = require("../models/goal");
-const DiaryMeal = require("../models/diary-meal");
-const DiaryExercise = require("../models/diary-exercise");
+import Goal from "../models/goal.js";
+import DiaryMeal from "../models/diary-meal.js";
+import DiaryExercise from "../models/diary-exercise.js";
 
-const { setDate } = require("../utils/set-date");
+import { setDate } from "../utils/set-date.js";
 
-const { setMacronutrients } = require("../utils/macronutrients");
+import { setMacronutrients } from "../utils/macronutrients.js";
 
-const { CreateSuccess } = require("../utils/success");
-const { CreateError } = require("../utils/error");
+import { CreateSuccess } from "../utils/success.js";
+import { CreateError } from "../utils/error.js";
 
-exports.getDashboard = async (req, res, next) => {
+export const getDashboard = async (req, res, next) => {
   try {
     const user = req.user.id;
 
@@ -66,7 +66,7 @@ exports.getDashboard = async (req, res, next) => {
   }
 };
 
-exports.getCaloriesStatistic = async (req, res, next) => {
+export const getCaloriesStatistic = async (req, res, next) => {
   try {
     const user = req.user.id;
 
@@ -103,7 +103,7 @@ exports.getCaloriesStatistic = async (req, res, next) => {
   }
 };
 
-exports.getExercisesStatistic = async (req, res, next) => {
+export const getExercisesStatistic = async (req, res, next) => {
   try {
     const user = req.user.id;
 
@@ -138,7 +138,7 @@ exports.getExercisesStatistic = async (req, res, next) => {
   }
 };
 
-exports.getWeightStatistic = async (req, res, next) => {
+export const getWeightStatistic = async (req, res, next) => {
   try {
     const user = req.user.id;
     const limit = req.query.limit;

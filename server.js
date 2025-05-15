@@ -1,40 +1,44 @@
-const express = require("express");
-const bodyParser = require('body-parser');
-const cors = require("cors");
+import express from "express";
+import bodyParser from "body-parser";
+import cors from "cors";
+import dotenv from "dotenv";
+import path from "path";
+import mongoose from "mongoose";
+import { fileURLToPath } from "url";
 
-require('dotenv').config();
+import authRoutes from "./routes/auth.js";
+import usersRoutes from "./routes/users.js";
+import dashboardRoutes from "./routes/dashboard.js";
+import exercisesRoutes from "./routes/exercises.js";
+import rolesRoutes from "./routes/roles.js";
+import mealsRoutes from "./routes/meals.js";
+import foodRoutes from "./routes/food.js";
+import diaryRoutes from "./routes/diary.js";
+import recipesRoutes from "./routes/recipes.js";
+import recipeCategoriesRoutes from "./routes/recipe-categories.js";
+import goalsRoutes from "./routes/goals.js";
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+dotenv.config();
 
 const app = express();
 
-const authRoutes = require("./routes/auth");
-const usersRoutes = require("./routes/users");
-const dashboardRoutes = require("./routes/dashboard");
-const exercisesRoutes = require("./routes/exercises");
-const rolesRoutes = require("./routes/roles");
-const mealsRoutes = require("./routes/meals");
-const foodRoutes = require("./routes/food");
-const diaryRoutes = require("./routes/diary");
-const recipesRoutes = require("./routes/recipes");
-const recipeCategoriesRoutes = require("./routes/recipe-categories");
-const goalsRoutes = require("./routes/goals");
-
-const path = require("path");
-
-const mongoose = require("mongoose");
 const mongoDBURL = process.env.MONGO_URL;
 
-mongoose.connect(mongoDBURL).then(() => {
-  console.log("Connected to database!");
-});
+mongoose.connect(mongoDBURL)
+  .then(() => console.log("Connected to database!"))
+  .catch((err) => console.error("MongoDB connection error:", err));
 
 app.use(bodyParser.json());
 app.use(cors());
 
 app.use((req, res, next) => {
-    res.setHeader('Access-Control-Allow-Origin', '*');
-    res.setHeader('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization');
-    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PATCH, PUT, DELETE, OPTIONS');
-    next();
+  res.setHeader("Access-Control-Allow-Origin", "*");
+  res.setHeader("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization");
+  res.setHeader("Access-Control-Allow-Methods", "GET, POST, PATCH, PUT, DELETE, OPTIONS");
+  next();
 });
 
 app.use("/api/auth", authRoutes);
@@ -49,17 +53,19 @@ app.use("/api/recipes", recipesRoutes);
 app.use("/api/recipe-categories", recipeCategoriesRoutes);
 app.use("/api/goals", goalsRoutes);
 
-app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
 app.use((obj, req, res, next) => {
   const statusCode = obj.status || 500;
   const errorMessage = obj.message || "Something went wrong";
   return res.status(statusCode).json({
-    success: [200,201,204].some(a => a === obj.status) ? true : false,
+    success: [200, 201, 204].includes(obj.status),
     status: statusCode,
     message: errorMessage,
     data: obj.data
   });
 });
 
-app.listen(3000);
+app.listen(3000, () => {
+  console.log("Server is running on port 3000");
+});

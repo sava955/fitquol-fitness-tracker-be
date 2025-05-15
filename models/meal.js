@@ -1,6 +1,8 @@
-const mongoose = require("mongoose");
+import mongoose from "mongoose";
 
-const mealSchema = mongoose.Schema({
+const { Schema } = mongoose;
+
+const mealSchema = new Schema({
   name: { type: String, required: true },
   calories: { type: Number, required: true },
   protein: { type: Number, required: true },
@@ -8,4 +10,6 @@ const mealSchema = mongoose.Schema({
   carbohydrates: { type: Number, required: true },
 });
 
-module.exports = mongoose.model("Meal", mealSchema);
+const Meal = mongoose.model("Meal", mealSchema);
+
+export default Meal;

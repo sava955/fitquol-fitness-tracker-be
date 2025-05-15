@@ -1,6 +1,11 @@
-const multer = require("multer");
-const fs = require("fs");
-const path = require("path");
+import multer from "multer";
+import fs from "fs";
+import path from "path";
+import { fileURLToPath } from "url";
+
+// Handle __dirname in ES module
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 const uploadDir = path.join(__dirname, "../uploads");
 
@@ -17,10 +22,10 @@ const storage = multer.diskStorage({
   },
 });
 
-const upload = multer({
+export const upload = multer({
   storage: storage,
   limits: {
-    fileSize: 2 * 1024 * 1024 // 2MB
+    fileSize: 2 * 1024 * 1024, // 2MB
   },
   fileFilter: function (req, file, cb) {
     const filetypes = /jpeg|jpg|png|pdf|webp/;
@@ -30,9 +35,7 @@ const upload = multer({
     if (extname && mimetype) {
       return cb(null, true);
     } else {
-      cb(new Error("Only .jpeg, .jpg, .png and webp files are allowed"));
+      cb(new Error("Only .jpeg, .jpg, .png, .webp and .pdf files are allowed"));
     }
   },
 });
-
-module.exports = { upload };

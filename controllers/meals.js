@@ -1,9 +1,9 @@
-const Meal = require("../models/meal");
+import Meal from "../models/meal.js";
 
-const { CreateSuccess } = require("../utils/success");
-const { CreateError } = require("../utils/error");
+import { CreateSuccess } from "../utils/success.js";
+import { CreateError } from "../utils/error.js";
 
-exports.getMeals = (req, res, next) => {
+export const getMeals = (req, res, next) => {
   const start = parseInt(req.query.start);
   const limit = parseInt(req.query.limit);
 
@@ -32,7 +32,7 @@ exports.getMeals = (req, res, next) => {
     });
 };
 
-exports.getMealById = (req, res, next) => {
+export const getMealById = (req, res, next) => {
   Meal.findById(req.params.id).then((data) => {
     next(CreateSuccess(200, "Meal fetched successfully!", data));
   }).catch(() => {

@@ -1,17 +1,17 @@
-const DiaryMeal = require("../models/diary-meal");
-const DiaryExercise = require("../models/diary-exercise");
+import DiaryMeal from "../models/diary-meal.js";
+import DiaryExercise from "../models/diary-exercise.js";
 
-const Goal = require("../models/goal");
+import Goal from "../models/goal.js";
 
-const { CreateSuccess } = require("../utils/success");
-const { CreateError } = require("../utils/error");
+import { CreateSuccess } from "../utils/success.js";
+import { CreateError } from "../utils/error.js";
 
-const { setMacronutrients } = require("../utils/macronutrients");
-const { setMicronutrients } = require("../utils/micronutrients");
+import { setMacronutrients } from "../utils/macronutrients.js";
+import { setMicronutrients } from "../utils/micronutrients.js";
 
-const { setDate } = require("../utils/set-date");
+import { setDate } from "../utils/set-date.js";
 
-exports.getDaiaryByDay = async (req, res, next) => {
+export const getDaiaryByDay = async (req, res, next) => {
   try {
     const user = req.user;
     const day = setDate(req.query.day);
@@ -39,7 +39,7 @@ exports.getDaiaryByDay = async (req, res, next) => {
   }
 };
 
-exports.addMealToDiary = async (req, res, next) => {
+export const addMealToDiary = async (req, res, next) => {
   try {
     const diaryMeal = new DiaryMeal({
       ...req.body,
@@ -55,7 +55,7 @@ exports.addMealToDiary = async (req, res, next) => {
   }
 };
 
-exports.updateDiaryMeal = async (req, res, next) => {
+export const updateDiaryMeal = async (req, res, next) => {
   try {
     const id = req.params.id;
 
@@ -76,7 +76,7 @@ exports.updateDiaryMeal = async (req, res, next) => {
   }
 };
 
-exports.deleteDiaryMeal = async (req, res, next) => {
+export const deleteDiaryMeal = async (req, res, next) => {
   const id = req.params.id;
 
   DiaryMeal.findOneAndDelete({ _id: id })
@@ -88,7 +88,7 @@ exports.deleteDiaryMeal = async (req, res, next) => {
     });
 };
 
-exports.addExerciseToDiary = async (req, res, next) => {
+export const addExerciseToDiary = async (req, res, next) => {
   try {
     const diaryExercise = new DiaryExercise({
       ...req.body,
@@ -104,7 +104,7 @@ exports.addExerciseToDiary = async (req, res, next) => {
   }
 };
 
-exports.updateDiaryExercise = async (req, res, next) => {
+export const updateDiaryExercise = async (req, res, next) => {
   try {
     const id = req.params.id;
     const diaryExercise = req.body;
@@ -122,7 +122,7 @@ exports.updateDiaryExercise = async (req, res, next) => {
   }
 };
 
-exports.deleteDiaryExercise = async (req, res, next) => {
+export const deleteDiaryExercise = async (req, res, next) => {
   const id = req.params.id;
 
   DiaryExercise.findOneAndDelete({ _id: id })

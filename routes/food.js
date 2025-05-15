@@ -1,9 +1,10 @@
-const express = require('express');
-const foodCtrl = require('../controllers/food');
+import express from 'express';
+import * as foodCtrl from '../controllers/food.js';
+import * as authMiddleware from '../utils/auth-middleware.js';
+
 const router = express.Router();
-const authMiddleware = require('../utils/auth-middleware');
 
 router.get('', authMiddleware.verifyToken, foodCtrl.getFood);
 router.get('/:id', authMiddleware.verifyToken, foodCtrl.getFoodById);
 
-module.exports = router;
+export default router;

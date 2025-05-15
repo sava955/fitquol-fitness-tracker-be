@@ -1,9 +1,9 @@
-const Exercise = require("../models/exercise");
+import Exercise from "../models/exercise.js";
 
-const { CreateSuccess } = require("../utils/success");
-const { CreateError } = require("../utils/error");
+import { CreateSuccess } from "../utils/success.js";
+import { CreateError } from "../utils/error.js";
 
-exports.getExercises = (req, res, next) => {
+export const getExercises = (req, res, next) => {
   const start = parseInt(req.query.start);
   const limit = parseInt(req.query.limit);
 
@@ -34,7 +34,7 @@ exports.getExercises = (req, res, next) => {
     });
 };
 
-exports.getExerciseById = (req, res, next) => {
+export const getExerciseById = (req, res, next) => {
   Exercise.findById(req.params.id).then((data) => {
     next(CreateSuccess(200, "Exercise fetched successfully!", data));
   }).catch(() => {

@@ -1,13 +1,13 @@
-const mongoose = require("mongoose");
-const Schema = mongoose.Schema;
+import mongoose from 'mongoose';
+const { Schema } = mongoose;
 
-const diaryExerciseSchema = Schema({
+const diaryExerciseSchema = new Schema({
   day: { type: Date, required: true },
   exercise: { type: Schema.Types.ObjectId, ref: "Exercise" },
   sets: { type: Number, required: true, min: 0 },
   setDuration: { type: Number, required: true, min: 1 },
   caloriesBurned: { type: Number, required: true },
   user: { type: Schema.Types.ObjectId, ref: "User" },
-});
+}, { timestamps: true });
 
-module.exports = mongoose.model('DiaryExercise', diaryExerciseSchema);
+export default mongoose.model('DiaryExercise', diaryExerciseSchema);

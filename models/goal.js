@@ -1,7 +1,8 @@
-const mongoose = require("mongoose");
-const Schema = mongoose.Schema;
+import mongoose from "mongoose";
 
-const goalSchema = Schema({
+const { Schema } = mongoose;
+
+const goalSchema = new Schema({
   fromDate: { type: Date, required: true },
   measurementSystem: { type: String, required: true },
   weight: { type: Number, required: true },
@@ -54,4 +55,6 @@ const goalSchema = Schema({
   user: { type: Schema.Types.ObjectId, ref: "User" },
 });
 
-module.exports = mongoose.model("Goal", goalSchema);
+const Goal = mongoose.model("Goal", goalSchema);
+
+export default Goal;

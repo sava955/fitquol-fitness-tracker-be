@@ -1,14 +1,13 @@
-const Food = require("../models/food");
-const Goal = require("../models/goal");
+import Food from "../models/food.js";
+import Goal from "../models/goal.js";
 
-const { CreateSuccess } = require("../utils/success");
-const { CreateError } = require("../utils/error");
+import { CreateSuccess } from "../utils/success.js";
+import { CreateError } from "../utils/error.js";
 
-const { setCalories } = require("../utils/calories");
-const { setMacronutrients } = require("../utils/macronutrients");
-const { setMicronutrients } = require("../utils/micronutrients");
+import { setMacronutrients } from "../utils/macronutrients.js";
+import { setMicronutrients } from "../utils/micronutrients.js";
 
-exports.getFood = async (req, res, next) => {
+export const getFood = async (req, res, next) => {
   try {
     const start = parseInt(req.query.start);
     const limit = parseInt(req.query.limit);
@@ -62,7 +61,7 @@ exports.getFood = async (req, res, next) => {
   }
 };
 
-exports.getFoodById = async (req, res, next) => {
+export const getFoodById = async (req, res, next) => {
   try {
     const food = await Food.findById(req.params.id);
     const goal = await Goal.findOne({ user: req.user.id });

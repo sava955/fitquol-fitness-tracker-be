@@ -1,7 +1,7 @@
-const mongoose = require("mongoose");
-const Schema = mongoose.Schema;
+import mongoose from "mongoose";
+const { Schema } = mongoose;
 
-const userSchema = Schema({
+const userSchema = new Schema({
   firstName: { type: String, required: true },
   lastName: { type: String, required: true },
   dateOfBirth: { type: Date, required: true },
@@ -11,7 +11,9 @@ const userSchema = Schema({
   profileImage: { type: String },
   goals: [{ type: Schema.Types.ObjectId, ref: "Goal" }],
   role: { type: Schema.Types.ObjectId, ref: "Role", required: true },
-  createdAt: { type: Date, required: true, default: Date.now() }
+  createdAt: { type: Date, required: true, default: Date.now }
 });
 
-module.exports = mongoose.model("User", userSchema);
+const User = mongoose.model("User", userSchema);
+
+export default User;

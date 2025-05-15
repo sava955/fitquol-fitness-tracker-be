@@ -1,15 +1,15 @@
-const User = require("../models/user");
-const Goal = require("../models/goal");
+import User from "../models/user.js";
+import Goal from "../models/goal.js";
 
-const bcrypt = require("bcrypt");
+import bcrypt from "bcrypt";
 
-const { setDate } = require("../utils/set-date");
-const { setUserGoal } = require("../utils/set-user-goal");
+import { setDate } from "../utils/set-date.js";
+import { setUserGoal } from "../utils/set-user-goal.js";
 
-const { CreateSuccess } = require("../utils/success");
-const { CreateError } = require("../utils/error");
+import { CreateSuccess } from "../utils/success.js";
+import { CreateError } from "../utils/error.js";
 
-exports.getCurrentUser = (req, res, next) => {
+export const getCurrentUser = (req, res, next) => {
   User.findById(req.user.id)
     .select("-password")
     .populate("role", "role")
@@ -25,7 +25,7 @@ exports.getCurrentUser = (req, res, next) => {
     });
 };
 
-exports.updateUser = async (req, res, next) => {
+export const updateUser = async (req, res, next) => {
   try {
     const id = req.params.id;
 
@@ -118,198 +118,7 @@ exports.updateUser = async (req, res, next) => {
   }
 };
 
-async function getGoalsRequest(req, user) {
-  const goalRequest = {
-    dateOfBirth: setDate(user.dateOfBirth),
-    gender: user.gender,
-    weight: Number(req.body.weight),
-    height: Number(req.body.height),
-    goal: req.body.goal,
-    weightPerWeek: Number(req.body.weightPerWeek),
-    activityLevel: req.body.activityLevel,
-  };
-
-  const updatedGoalData = await setUserGoal(goalRequest);
-
-  return {
-    fromDate: new Date(setDate(req.body.date)),
-    measurementSystem: req.body.measurementSystem,
-    weight: req.body.weight,
-    height: req.body.height,
-    goal: req.body.goal,
-    weightPerWeek: req.body.weightPerWeek,
-    activityLevel: req.body.activityLevel,
-    caloriesRequired: updatedGoalData.caloriesRequired,
-    macronutrients: updatedGoalData.macronutrients,
-    micronutrients: updatedGoalData.micronutrients,
-    user: req.user.id,
-  };
-}
-
-/*exports.updateUser = async (req, res, next) => {
-  //try {
-    const id = req.params.id;
-
-    let user = await User.findByIdAndUpdate(id, req.body, {
-      new: true,
-      runValidators: true,
-      context: 'query'
-    }).populate({
-      path: "goals",
-      options: { sort: { fromDate: -1 } },
-    });
-
-
-    if (req.body.weight && req.body.goal && req.body.height) {
-      if (
-        user.weight !== req.body.weight ||
-        user.goal !== req.body.goal ||
-        user.height !== req.body.height
-      ) {
-        const goal = await Goal.findOne({
-          user: user._id,
-          fromDate: setDate(new Date(req.body.date)),
-        });
-
-        const goalRequest = {
-          dateOfBirth: setDate(user.dateOfBirth),
-          gender: user.gender,
-          weight: Number(req.body.weight),
-          height: Number(req.body.height),
-          goal: req.body.goal,
-          weightPerWeek: Number(req.body.weightPerWeek),
-          activityLevel: req.body.activityLevel,
-        };
-
-        const updatedGoalData = await setUserGoal(goalRequest);
-
-        if (goal) {
-          await goal.updateOne({
-            fromDate: setDate(req.body.date),
-            measurementSystem: req.body.measurementSystem,
-            caloriesRequired: updatedGoalData.caloriesRequired,
-            macronutrients: updatedGoalData.macronutrients,
-            micronutrients: updatedGoalData.micronutrients,
-            user: user._id,
-            ...goalRequest,
-          });
-
-          user = await User.findById(req.user.id).populate({
-            path: "goals",
-            options: { sort: { fromDate: -1 } },
-          });
-        } else {
-          const goalData = {
-            fromDate: setDate(req.body.date),
-            measurementSystem: req.body.measurementSystem,
-            weight: req.body.weight,
-            height: req.body.height,
-            goal: req.body.goal,
-            weightPerWeek: req.body.weightPerWeek,
-            activityLevel: req.body.activityLevel,
-            caloriesRequired: updatedGoalData.caloriesRequired,
-            macronutrients: updatedGoalData.macronutrients,
-            micronutrients: updatedGoalData.micronutrients,
-            user: user._id,
-          };
-
-          const newGoal = new Goal(goalData);
-          await newGoal.save();
-
-          user = await User.updateOne(
-            { _id: req.user.id },
-            { $push: { goals: newGoal } }
-          );
-        }
-
-        await user.save();
-      }
-    }
-
-    next(CreateSuccess(200, "User data updated successfully!", user));
-  //} catch {
-  //  next(CreateError(500, "Faild to update user data!"));
- // }
-};*/
-
-/*exports.updateUser = async (req, res, next) => {
-  try {
-    const id = req.params.id;
-
-    let user = await User.findByIdAndUpdate(id, req.body, {
-      new: true
-    }).populate({
-      path: "goals",
-      options: { sort: { fromDate: -1 } },
-    });
-
-    if (!user) {
-      return next(CreateError(404, "User not found."));
-    }
-
-    const { weight, goal, height, date, weightPerWeek, activityLevel } = req.body;
-
-    const isGoalDataProvided = weight && goal && height;
-
-    if (isGoalDataProvided) {
-      const hasChanged = (
-        user.weight !== weight ||
-        user.goal !== goal ||
-        user.height !== height
-      );
-
-      if (hasChanged) {
-        const goalDate = setDate(new Date(date));
-        const existingGoal = await Goal.findOne({ user: user._id, fromDate: { $gte: goalDate } });
-
-        const goalRequest = {
-          dateOfBirth: setDate(user.dateOfBirth),
-          gender: user.gender,
-          weight: Number(weight),
-          height: Number(height),
-          goal,
-          weightPerWeek: Number(weightPerWeek),
-          activityLevel,
-        };
-
-        const updatedGoalData = await setUserGoal(goalRequest);
-
-        const goalData = {
-          fromDate: goalDate,
-          measurementSystem: req.body.measurementSystem,
-          caloriesRequired: updatedGoalData.caloriesRequired,
-          macronutrients: updatedGoalData.macronutrients,
-          micronutrients: updatedGoalData.micronutrients,
-          user: user._id,
-          ...goalRequest,
-        };
-
-        if (existingGoal) {
-          await existingGoal.updateOne(goalData);
-        } else {
-          const newGoal = new Goal(goalData);
-          await newGoal.save();
-
-          await User.updateOne(
-            { _id: user._id },
-            { $push: { goals: newGoal._id } }
-          );
-        }
-
-        user = await User.findById(user._id).populate({
-          path: "goals",
-          options: { sort: { fromDate: -1 } },
-        });
-      }
-    }
-
-    return next(CreateSuccess(200, "User data updated successfully!", user));
-  } catch (error) {
-    return next(CreateError(500, "Failed to update user data!"));
-  }
-};*/
-
-exports.updatePassword = async (req, res, next) => {
+export const updatePassword = async (req, res, next) => {
   try {
     const id = req.params.id;
     const user = await User.findById(id).select("password");
@@ -341,3 +150,31 @@ exports.updatePassword = async (req, res, next) => {
     next(CreateError(500, "Password update faild"));
   }
 };
+
+async function getGoalsRequest(req, user) {
+  const goalRequest = {
+    dateOfBirth: setDate(user.dateOfBirth),
+    gender: user.gender,
+    weight: Number(req.body.weight),
+    height: Number(req.body.height),
+    goal: req.body.goal,
+    weightPerWeek: Number(req.body.weightPerWeek),
+    activityLevel: req.body.activityLevel,
+  };
+
+  const updatedGoalData = await setUserGoal(goalRequest);
+
+  return {
+    fromDate: new Date(setDate(req.body.date)),
+    measurementSystem: req.body.measurementSystem,
+    weight: req.body.weight,
+    height: req.body.height,
+    goal: req.body.goal,
+    weightPerWeek: req.body.weightPerWeek,
+    activityLevel: req.body.activityLevel,
+    caloriesRequired: updatedGoalData.caloriesRequired,
+    macronutrients: updatedGoalData.macronutrients,
+    micronutrients: updatedGoalData.micronutrients,
+    user: req.user.id,
+  };
+}

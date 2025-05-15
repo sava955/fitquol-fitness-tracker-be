@@ -1,20 +1,21 @@
-const bcrypt = require("bcrypt");
-const jwt = require("jsonwebtoken");
-const Role = require("../models/role");
-const User = require("../models/user");
-const Goal = require("../models/goal");
+import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken";
+import mongoose from "mongoose";
 
-const mongoose = require("mongoose");
+import Role from "../models/role.js";
+import User from "../models/user.js";
+import Goal from "../models/goal.js";
 
-const { setDate } = require("../utils/set-date");
-const { setUserGoal } = require("../utils/set-user-goal");
+import { setDate } from "../utils/set-date.js";
+import { setUserGoal } from "../utils/set-user-goal.js";
 
-const { CreateSuccess } = require("../utils/success");
-const { CreateError } = require("../utils/error");
+import { CreateSuccess } from "../utils/success.js";
+import { CreateError } from "../utils/error.js";
 
-require("dotenv").config();
+import dotenv from "dotenv";
+dotenv.config();
 
-exports.register = async (req, res, next) => {
+export const register = async (req, res, next) => {
   try {
     const existingUser = await User.findOne({ email: req.body.email });
     const role = await Role.findOne({ role: "User" });
@@ -87,7 +88,7 @@ exports.register = async (req, res, next) => {
   }
 };
 
-exports.login = async (req, res, next) => {
+export const login = async (req, res, next) => {
   try {
     const user = await User.findOne({ email: req.body.email }).populate("role");
 

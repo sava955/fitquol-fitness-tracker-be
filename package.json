@@ -1,6 +1,7 @@
 {
   "name": "be-ds-fitness-tracker",
   "version": "1.0.0",
+  "type": "module",
   "main": "index.js",
   "scripts": {
     "devStart": "nodemon server.js"

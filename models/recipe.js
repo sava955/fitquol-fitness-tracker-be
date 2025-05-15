@@ -1,7 +1,33 @@
-const mongoose = require("mongoose");
-const Schema = mongoose.Schema;
+import mongoose from "mongoose";
+const { Schema } = mongoose;
 
-const recipeSchema = Schema({
+const nutrientSchema = new Schema({
+  _id: false,
+  key: { type: String },
+  name: { type: String },
+  percentageOfTotal: { type: Number },
+  unitOfMeasurement: { type: String },
+  value: { type: Number },
+  dailyLimit: { type: Number },
+});
+
+const ingredientSchema = new Schema({
+  name: { type: String, required: true },
+  quantity: { type: Number, required: true },
+  measurementUnit: { type: String, required: true, default: "g" },
+  nutrients: {
+    calories: { type: Number, required: true },
+    macronutrients: [nutrientSchema],
+    micronutrients: [nutrientSchema],
+  },
+});
+
+const instructionSchema = new Schema({
+  step: { type: String },
+  description: { type: String },
+});
+
+const recipeSchema = new Schema({
   image: { type: String },
   name: { type: String, required: true },
   description: { type: String },
@@ -10,44 +36,8 @@ const recipeSchema = Schema({
   servings: { type: Number, required: true },
   mealType: { type: String, required: true },
   category: { type: Schema.Types.ObjectId, ref: "RecipeCategory" },
-  ingredients: [
-    {
-      name: { type: String, required: true },
-      quantity: { type: Number, required: true },
-      measurementUnit: { type: String, required: true, default: 'g' },
-      nutrients: {
-        calories: { type: Number, required: true },
-        macronutrients: [
-          {
-            _id: false,
-            key: { type: String },
-            name: { type: String },
-            percentageOfTotal: { type: Number },
-            unitOfMeasurement: { type: String },
-            value: { type: Number },
-            dailyLimit: { type: Number },
-          },
-        ],
-        micronutrients: [
-          {
-            _id: false,
-            key: { type: String },
-            name: { type: String },
-            percentageOfTotal: { type: Number },
-            unitOfMeasurement: { type: String },
-            value: { type: Number },
-            dailyLimit: { type: Number },
-          },
-        ],
-      },
-    },
-  ],
-  instructions: [
-    {
-      step: { type: String },
-      description: { type: String }
-    }
-  ],
+  ingredients: [ingredientSchema],
+  instructions: [instructionSchema],
   nutrients: {
     calories: { type: Number, required: true },
     carbohydrates: { type: Number },
@@ -90,4 +80,6 @@ const recipeSchema = Schema({
   createdBy: { type: Schema.Types.ObjectId, ref: "User" },
 });
 
-module.exports = mongoose.model("Recipe", recipeSchema);
+const Recipe = mongoose.model("Recipe", recipeSchema);
+
+export default Recipe;
