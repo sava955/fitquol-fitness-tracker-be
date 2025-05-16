@@ -8,4 +8,9 @@ router.get('/current-user', authMiddleware.verifyToken, usersCtrl.getCurrentUser
 router.patch('/:id', authMiddleware.verifyToken, usersCtrl.updateUser);
 router.patch('/password/:id', authMiddleware.verifyToken, usersCtrl.updatePassword);
 
+// In routes/users.js (or directly in server.js temporarily)
+router.get("/", (req, res) => {
+    res.json({ message: "Users endpoint works!" });
+  });
+
 export default router;
