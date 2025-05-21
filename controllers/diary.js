@@ -14,7 +14,7 @@ import { setDate } from "../utils/set-date.js";
 export const getDaiaryByDay = async (req, res, next) => {
   try {
     const user = req.user;
-    const day = setDate(req.query.day);
+    const day = new Date(setDate(req.query.day));
 
     const meals = await getMealTypes(day, user);
     const exercises = await getExercises(day, user);
