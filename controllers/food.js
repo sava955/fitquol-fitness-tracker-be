@@ -4,6 +4,8 @@ import Goal from "../models/goal.js";
 import { CreateSuccess } from "../utils/success.js";
 import { CreateError } from "../utils/error.js";
 
+import { setDate } from "../utils/set-date.js";
+
 import { setMacronutrients } from "../utils/macronutrients.js";
 import { setMicronutrients } from "../utils/micronutrients.js";
 
@@ -12,7 +14,7 @@ export const getFood = async (req, res, next) => {
     const start = parseInt(req.query.start);
     const limit = parseInt(req.query.limit);
 
-    const date = req.query.date || new Date();
+    const date = req.query.date || setDate(new Date());
 
     const food = req.query.food || "";
 
