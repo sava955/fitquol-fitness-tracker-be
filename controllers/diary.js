@@ -34,8 +34,9 @@ export const getDaiaryByDay = async (req, res, next) => {
     };
 
     next(CreateSuccess(200, "Diary fetched successfully!", diary));
-  } catch {
-    next(CreateError(500, "Fetching diary failed!"));
+  } catch (err) {
+    console.error('Error fetching diary:', err);
+    res.status(500).json({ error: 'Internal Server Error' });
   }
 };
 
