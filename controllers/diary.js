@@ -14,7 +14,8 @@ import { setDate } from "../utils/set-date.js";
 export const getDaiaryByDay = async (req, res, next) => {
   try {
     const user = req.user;
-    const day = new Date(setDate(req.query.day));
+    const day = setDate(req.query.day);
+    console.log(day);
 
     const meals = await getMealTypes(day, user);
     const exercises = await getExercises(day, user);
@@ -34,9 +35,8 @@ export const getDaiaryByDay = async (req, res, next) => {
     };
 
     next(CreateSuccess(200, "Diary fetched successfully!", diary));
-  } catch (err) {
-    console.error('Error fetching diary:', err);
-    res.status(500).json({ error: 'Internal Server Error' });
+  } catch {
+    next(CreateError(500, "Fetching diary failed!"));
   }
 };
 
