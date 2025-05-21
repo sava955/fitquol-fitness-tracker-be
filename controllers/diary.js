@@ -12,7 +12,7 @@ import { setMicronutrients } from "../utils/micronutrients.js";
 import { setDate } from "../utils/set-date.js";
 
 export const getDaiaryByDay = async (req, res, next) => {
-  try {
+  // try {
     const user = req.user;
     const day = setDate(req.query.day);
     console.log(day);
@@ -35,9 +35,9 @@ export const getDaiaryByDay = async (req, res, next) => {
     };
 
     next(CreateSuccess(200, "Diary fetched successfully!", diary));
-  } catch {
-    next(CreateError(500, "Fetching diary failed!"));
-  }
+  // } catch {
+  //   next(CreateError(500, "Fetching diary failed!"));
+  // }
 };
 
 export const addMealToDiary = async (req, res, next) => {
@@ -52,8 +52,6 @@ export const addMealToDiary = async (req, res, next) => {
 
     next(CreateSuccess(200, "Meal added successfully!", diaryMeal));
   } catch {
-    const day = setDate(req.query.day);
-    console.log(day);
     next(CreateError(500, "Failed to add meal!"));
   }
 };
