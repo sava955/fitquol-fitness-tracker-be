@@ -52,6 +52,8 @@ export const addMealToDiary = async (req, res, next) => {
 
     next(CreateSuccess(200, "Meal added successfully!", diaryMeal));
   } catch {
+    const day = setDate(req.query.day);
+    console.log(day);
     next(CreateError(500, "Failed to add meal!"));
   }
 };
