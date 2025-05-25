@@ -25,6 +25,8 @@ dotenv.config();
 
 const app = express();
 
+app.set('trust proxy', true);
+
 const mongoDBURL = process.env.MONGO_URL;
 
 mongoose.connect(mongoDBURL)
