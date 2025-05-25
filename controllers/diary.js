@@ -14,9 +14,7 @@ import { setDate } from "../utils/set-date.js";
 export const getDaiaryByDay = async (req, res, next) => {
   try {
     const user = req.user;
-    console.log('day', req.query.day);
     const day = setDate(req.query.day);
-    console.log('formated day', day);
 
     const meals = await getMealTypes(day, user);
     const exercises = await getExercises(day, user);
@@ -37,9 +35,7 @@ export const getDaiaryByDay = async (req, res, next) => {
 
     next(CreateSuccess(200, "Diary fetched successfully!", diary));
   } catch {
-    console.log('day', req.query.day);
     const day = setDate(req.query.day);
-    console.log('formated day', day);
     next(CreateError(500, "Fetching diary failed!"));
   }
 };
