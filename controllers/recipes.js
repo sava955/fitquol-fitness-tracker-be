@@ -102,7 +102,8 @@ export const getRecipeById = async (req, res, next) => {
 export const createRecipe = async (req, res, next) => {
   try {
     const user = req.user;
-    const url = req.protocol + "://" + req.get("host");
+    const isProd = process.env.NODE_ENV === "production";
+    const url = (isProd ? "https" : req.protocol) + "://" + req.get("host");
 
     if (req.body.category) {
       req.body.category = JSON.parse(req.body.category);
@@ -141,7 +142,8 @@ export const updateRecipe = async (req, res, next) => {
   try {
     const id = req.params.id;
     const recipe = await Recipe.findById(id);
-    const url = req.protocol + "://" + req.get("host");
+    const isProd = process.env.NODE_ENV === 'production';
+    const url = (isProd ? "https" : req.protocol) + "://" + req.get("host");
 
     if (req.user.id !== recipe.createdBy.toString()) {
       return next(
