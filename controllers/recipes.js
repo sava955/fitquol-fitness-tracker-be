@@ -244,7 +244,7 @@ export const deleteRecipe = async (req, res, next) => {
       }
       next(CreateSuccess(200, "Recipe deleted successfully!", data));
     })
-    // .catch(() => {
-    //   next(CreateError(500, "Recipe delete failed!"));
-    // });
+    .catch(() => {
+      next(CreateError(500, "Recipe delete failed!"));
+    });
 };
