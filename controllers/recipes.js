@@ -215,6 +215,8 @@ export const deleteRecipe = async (req, res, next) => {
   const id = req.params.id;
   const recipe = await Recipe.findById(id);
 
+  console.log(recipe);
+
   await RecipeCategory.findOneAndUpdate(
     { _id: recipe.category },
     { $pull: { recipes: id } },
