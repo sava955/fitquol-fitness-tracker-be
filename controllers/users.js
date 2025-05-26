@@ -65,8 +65,9 @@ export const updateUser = async (req, res, next) => {
         latestGoal.weightPerWeek !== weightPerWeek ||
         latestGoal.activityLevel !== activityLevel;
 
+      let goalData = await getGoalsRequest(req, user);  
+
       if (hasChanged && !isSameDate) {
-        const goalData = await getGoalsRequest(req, user);
         const newGoal = await new Goal(goalData);
         await newGoal.save();
 
@@ -81,7 +82,7 @@ export const updateUser = async (req, res, next) => {
             options: { sort: { fromDate: -1 } },
           });
       } else {
-        const goalData = await getGoalsRequest(req, user);
+        goalData.fromDate = latestGoal.fromDate;
         await latestGoal.updateOne(goalData);
 
         user = await User.findById(id)
